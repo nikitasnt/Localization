@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Localization.Manager.Exceptions;
 
 namespace Localization.Manager;
 
@@ -12,6 +13,7 @@ public interface ILocalizationSource
     /// </summary>
     /// <param name="localizationCode">Localization code.</param>
     /// <param name="cultureInfo">Culture information.</param>
+    /// <exception cref="LocalizedStringNotFoundException">The localized string was not found in the source.</exception>
     public string this[string localizationCode, CultureInfo cultureInfo] { get; }
 
     /// <summary>
@@ -20,6 +22,7 @@ public interface ILocalizationSource
     /// <param name="localizationCode">Localization code.</param>
     /// <param name="cultureInfo">Culture information.</param>
     /// <param name="result">Localized string.</param>
-    /// <returns><see langword="true"/> if the value was in storage; otherwise <see langword="false"/>.</returns>
-    public bool TryGetLocalizedString(string localizationCode, CultureInfo cultureInfo, out string result);
+    /// <returns><see langword="true"/> if the localized string was in storage; otherwise <see langword="false"/>.
+    /// </returns>
+    public bool TryGetLocalizedString(string localizationCode, CultureInfo cultureInfo, out string? result);
 }
