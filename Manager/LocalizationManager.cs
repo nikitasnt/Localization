@@ -37,8 +37,8 @@ public sealed class LocalizationManager
     
     /// <summary>
     /// Register the localization source in the manager.
-    /// <remarks>The search for a string in localization sources is carried out in the order in which they were registered.
-    /// </remarks>
+    /// <remarks>The search for a string in localization sources is carried out in the order in which they were
+    /// registered.</remarks>
     /// </summary>
     /// <param name="localizationSource">Localization source.</param>
     /// <returns>Current localization manager.</returns>

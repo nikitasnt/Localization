@@ -93,7 +93,7 @@ public class LocalizationManagerTests
     public void GetString_ShouldReturnLocalizedStr_WhenLocalizationSource_ContainsSearchStr()
     {
         // Arrange.
-        var expectedString = "Hello, world!";
+        var expectedString = "Hello world!";
         var localizationCode = "hw";
         var cultureInfo = new CultureInfo("en-US");
         var manager =
@@ -110,7 +110,7 @@ public class LocalizationManagerTests
     public void TryGetString_ShouldReturnTrueAndLocalizedStr_WhenLocalizationSource_ContainsSearchStr()
     {
         // Arrange.
-        var expectedString = "Hello, world!";
+        var expectedString = "Hello world!";
         var localizationCode = "hw";
         var cultureInfo = new CultureInfo("en-US");
         var manager =
@@ -128,7 +128,7 @@ public class LocalizationManagerTests
     public void GetString_ShouldThrowException_WhenLocalizationSource_DoesntContainsSearchStr_ByCode()
     {
         // Arrange.
-        var expectedString = "Hello, world!";
+        var expectedString = "Hello world!";
         var localizationCode = "hw";
         var cultureInfo = new CultureInfo("en-US");
         var manager = new LocalizationManager(ConstructLocalizationSource(expectedString, "anotherCode", cultureInfo));
@@ -144,7 +144,7 @@ public class LocalizationManagerTests
     public void TryGetString_ShouldReturnFalseAndNull_WhenLocalizationSource_DoesntContainsSearchStr_ByCode()
     {
         // Arrange.
-        var expectedString = "Hello, world!";
+        var expectedString = "Hello world!";
         var localizationCode = "hw";
         var cultureInfo = new CultureInfo("en-US");
         var manager = new LocalizationManager(ConstructLocalizationSource(expectedString, "anotherCode", cultureInfo));
@@ -161,7 +161,7 @@ public class LocalizationManagerTests
     public void GetString_ShouldThrowException_WhenLocalizationSource_DoesntContainsSearchStr_ByCultInfo()
     {
         // Arrange.
-        var expectedString = "Hello, world!";
+        var expectedString = "Hello world!";
         var localizationCode = "hw";
         var cultureInfo = new CultureInfo("en-US");
         var manager =
@@ -179,7 +179,7 @@ public class LocalizationManagerTests
     public void TryGetString_ShouldReturnFalseAndNull_WhenLocalizationSource_DoesntContainsSearchStr_ByCultInfo()
     {
         // Arrange.
-        var expectedString = "Hello, world!";
+        var expectedString = "Hello world!";
         var localizationCode = "hw";
         var cultureInfo = new CultureInfo("en-US");
         var manager =
@@ -198,7 +198,7 @@ public class LocalizationManagerTests
     public void GetString_ShouldThrowException_WhenLocalizationSource_CultInfoDoesntCorrespondCurrentCultInfo()
     {
         // Arrange.
-        var expectedString = "Hello, world!";
+        var expectedString = "Hello world!";
         var localizationCode = "hw";
         CultureInfo.CurrentCulture = new CultureInfo("en-US");
         var manager =
@@ -216,7 +216,7 @@ public class LocalizationManagerTests
     public void TryGetString_ShouldReturnFalseAndNull_WhenLocalizationSource_CultInfoDoesntCorrespondCurrentCultInfo()
     {
         // Arrange.
-        var expectedString = "Hello, world!";
+        var expectedString = "Hello world!";
         var localizationCode = "hw";
         CultureInfo.CurrentCulture = new CultureInfo("en-US");
         var manager =
@@ -229,6 +229,84 @@ public class LocalizationManagerTests
         // Assert.
         Assert.False(methodResult);
         Assert.Null(outResult);
+    }
+
+    #endregion
+
+    #region Localization manager with two registered sources
+
+    [Fact]
+    public void GetString_ShouldReturnLocalizedStr_WhenOnlySecondLocalizationSource_ContainsSearchStr()
+    {
+        // Arrange.
+        var expectedString = "Hello world!";
+        var localizationCode = "hw_en";
+        var cultureInfo = new CultureInfo("en-US");
+        var manager = new LocalizationManager()
+            .RegisterSource(ConstructLocalizationSource("Hallo Welt!", "hw_de", new CultureInfo("de-DE")))
+            .RegisterSource(ConstructLocalizationSource(expectedString, localizationCode, cultureInfo));
+        
+        // Act.
+        var result = manager.GetString(localizationCode, cultureInfo);
+        
+        // Assert.
+        Assert.Equal(expectedString, result);
+    }
+    
+    [Fact]
+    public void TryGetString_ShouldReturnTrueAndLocalizedStr_WhenOnlySecondLocalizationSource_ContainsSearchStr()
+    {
+        // Arrange.
+        var expectedString = "Hello world!";
+        var localizationCode = "hw_en";
+        var cultureInfo = new CultureInfo("en-US");
+        var manager = new LocalizationManager()
+            .RegisterSource(ConstructLocalizationSource("Hallo Welt!", "hw_de", new CultureInfo("de-DE")))
+            .RegisterSource(ConstructLocalizationSource(expectedString, localizationCode, cultureInfo));
+        
+        // Act.
+        var methodResult = manager.TryGetString(localizationCode, cultureInfo, out var outResult);
+        
+        // Assert.
+        Assert.True(methodResult);
+        Assert.Equal(expectedString, outResult);
+    }
+    
+    [Fact]
+    public void GetString_ShouldReturnLocalizedStr_WhenBothLocalizationSources_ContainsSearchStr()
+    {
+        // Arrange.
+        var expectedString = "Hello world!";
+        var localizationCode = "hw";
+        var cultureInfo = new CultureInfo("en-US");
+        var manager = new LocalizationManager()
+            .RegisterSource(ConstructLocalizationSource(expectedString, localizationCode, cultureInfo))
+            .RegisterSource(ConstructLocalizationSource("Hello another world!", localizationCode, cultureInfo));
+        
+        // Act.
+        var result = manager.GetString(localizationCode, cultureInfo);
+        
+        // Assert.
+        Assert.Equal(expectedString, result);
+    }
+    
+    [Fact]
+    public void TryGetString_ShouldReturnTrueAndLocalizedStr_WhenBothLocalizationSources_ContainsSearchStr()
+    {
+        // Arrange.
+        var expectedString = "Hello world!";
+        var localizationCode = "hw";
+        var cultureInfo = new CultureInfo("en-US");
+        var manager = new LocalizationManager()
+            .RegisterSource(ConstructLocalizationSource(expectedString, localizationCode, cultureInfo))
+            .RegisterSource(ConstructLocalizationSource("Hello another world!", localizationCode, cultureInfo));
+        
+        // Act.
+        var methodResult = manager.TryGetString(localizationCode, cultureInfo, out var outResult);
+        
+        // Assert.
+        Assert.True(methodResult);
+        Assert.Equal(expectedString, outResult);
     }
 
     #endregion
