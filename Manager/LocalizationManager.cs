@@ -34,6 +34,19 @@ public sealed class LocalizationManager
     {
         _registeredSources = new List<ILocalizationSource> { firstLocalizationSource };
     }
+    
+    /// <summary>
+    /// Register the localization source in the manager.
+    /// <remarks>The search for a string in localization sources is carried out in the order in which they were registered.
+    /// </remarks>
+    /// </summary>
+    /// <param name="localizationSource">Localization source.</param>
+    /// <returns>Current localization manager.</returns>
+    public LocalizationManager RegisterSource(ILocalizationSource localizationSource)
+    {
+        _registeredSources.Add(localizationSource);
+        return this;
+    }
 
     /// <summary>
     /// Get a localized string using the current thread's culture information.
@@ -102,18 +115,5 @@ public sealed class LocalizationManager
 
         result = null;
         return false;
-    }
-
-    /// <summary>
-    /// Register the localization source in the manager.
-    /// <remarks>The search for a string in localization sources is carried out in the order in which they were registered.
-    /// </remarks>
-    /// </summary>
-    /// <param name="localizationSource">Localization source.</param>
-    /// <returns>Current localization manager.</returns>
-    public LocalizationManager RegisterSource(ILocalizationSource localizationSource)
-    {
-        _registeredSources.Add(localizationSource);
-        return this;
     }
 }
