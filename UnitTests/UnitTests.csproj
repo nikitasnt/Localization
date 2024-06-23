@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Manager\Manager.csproj" />
+      <ProjectReference Include="..\Sources\Sources.csproj" />
     </ItemGroup>
 
 </Project>
