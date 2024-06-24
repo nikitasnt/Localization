@@ -44,6 +44,11 @@ public sealed class LocalizationManager
     /// <returns>Current localization manager.</returns>
     public LocalizationManager RegisterSource(ILocalizationSource localizationSource)
     {
+        if (_registeredSources.Contains(localizationSource))
+        {
+            return this;
+        }
+        
         _registeredSources.Add(localizationSource);
         return this;
     }

@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Reflection;
 using Localization.Manager;
 using Localization.Manager.Exceptions;
 using Moq;
@@ -10,6 +12,28 @@ namespace UnitTests;
 [SuppressMessage("ReSharper", "ConvertToConstant.Local")]
 public class LocalizationManagerTests
 {
+    #region Registration
+
+    [Fact]
+    public void RegisterSource_ShouldNotAddSameObject() // A fragile test that depends on the private field name.
+    {
+        // Arrange.
+        var source = new Mock<ILocalizationSource>().Object;
+        var manager = new LocalizationManager();
+        
+        // Act.
+        manager
+            .RegisterSource(source)
+            .RegisterSource(source);
+        
+        // Assert.
+        Assert.Single((IEnumerable)typeof(LocalizationManager)
+            .GetField("_registeredSources", BindingFlags.NonPublic | BindingFlags.Instance)!
+            .GetValue(manager)!);
+    }
+
+    #endregion
+    
     #region Localization manager without registered sources
 
     [Fact]

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<localization>
+    <culture name="en-US">
+        <hw>Hello World!</hw>
+        <haw>Hello another World!</haw>
+    </culture>
+    <culture name="de-DE">
+        <hw>Hallo Welt!</hw>
+        <haw>Hallo, eine andere Welt!</haw>
+    </culture>
+</localization>
